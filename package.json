@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/Alexandre-io/multer-imager#readme",
   "dependencies": {
-    "graphicsmagick-stream": "2.1.0",
+    "graphicsmagick-stream": "https://github.com/jondbm/graphicsmagick-stream/tarball/master",
     "s3fs": "~2.4.4"
   },
   "devDependencies": {
