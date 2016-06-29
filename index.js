@@ -27,7 +27,7 @@ function S3Storage(opts) {
   this.options.filename = (opts.filename || getFilename);
   this.s3fs = new S3FS(opts.bucket, opts);
   console.log('CONVERT GOES HERE!')
-  //this.convert = gm(opts.gm);
+  this.convert = gm(opts.gm);
 }
 
 function getFilename(req, file, cb) {
