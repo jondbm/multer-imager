@@ -1,6 +1,6 @@
 var S3FS = require('s3fs');
 var crypto = require('crypto');
-var gm = require('graphicsmagick-stream').subClass({ imageMagick: true });;
+var gm = require('graphicsmagick-stream');
 
 function S3Storage(opts) {
   if (!opts.bucket) {
