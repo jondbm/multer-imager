@@ -22,9 +22,12 @@ function S3Storage(opts) {
     throw new Error('gm is required');
   }
   this.options = opts;
+  console.log('OGM=')
+  console.log(opts.gm)
   this.options.filename = (opts.filename || getFilename);
   this.s3fs = new S3FS(opts.bucket, opts);
-  this.convert = gm(opts.gm);
+  console.log('CONVERT GOES HERE!')
+  //this.convert = gm(opts.gm);
 }
 
 function getFilename(req, file, cb) {
