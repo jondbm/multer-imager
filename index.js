@@ -1,6 +1,8 @@
 var S3FS = require('s3fs');
 var crypto = require('crypto');
-var gm = require('graphicsmagick-stream');
+// var gm = require('graphicsmagick-stream');
+
+gm = require('gm');
 
 function S3Storage(opts) {
   if (!opts.bucket) {
@@ -25,7 +27,7 @@ function S3Storage(opts) {
   this.options.filename = (opts.filename || getFilename);
   this.s3fs = new S3FS(opts.bucket, opts);
   //this.s3fs2 = new S3FS(opts.bucket, opts);
-  this.convert = gm(opts.gm);
+  //this.convert = gm(opts.gm);
   //this.convert2 = gm(opts.gm2);
 }
 
@@ -46,9 +48,20 @@ S3Storage.prototype._handleFile = function(req, file, cb) {
     var filePath2 = self.options.dirname + '/thumb_' + filename;
     var outStream = self.s3fs.createWriteStream(filePath);
     //var outStream2 = self.s3fs2.createWriteStream(filePath2);
-    file.stream
+    /*file.stream
       .pipe(self.convert())
-      .pipe(outStream);
+      .pipe(outStream);*/
+
+
+      var readStream = file.stream
+gm(readStream)
+.resize('200', '200')
+.stream(function (err, stdout, stderr) {
+  var writeStream = outStream
+  stdout.pipe(writeStream);
+});
+
+
     //file.stream
       //.pipe(self.convert2())
       //.pipe(outStream2);
