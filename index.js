@@ -58,7 +58,7 @@ S3Storage.prototype._handleFile = function(req, file, cb) {
     console.log(file.stream)
     //var outStream2 = self.s3fs2.createWriteStream(filePath2);
     file.stream
-      //.pipe(self.convert())
+      .pipe(self.convert())
       .pipe(outStream);
     /*file.stream
       .pipe(self.convert2())
