@@ -26,7 +26,7 @@ function S3Storage(opts) {
   this.options = opts;
   this.options.filename = (opts.filename || getFilename);
   this.s3fs = new S3FS(opts.bucket, opts);
-  //this.s3fs2 = new S3FS(opts.bucket, opts);
+  this.s3fs2 = new S3FS(opts.bucket, opts);
   //this.convert = gm(opts.gm);
   //this.convert2 = gm(opts.gm2);
 }
@@ -47,26 +47,19 @@ S3Storage.prototype._handleFile = function(req, file, cb) {
     var filePath = self.options.dirname + '/' + filename;
     var filePath2 = self.options.dirname + '/thumb_' + filename;
     var outStream = self.s3fs.createWriteStream(filePath);
-    //var outStream2 = self.s3fs2.createWriteStream(filePath2);
-    /*file.stream
-      .pipe(self.convert())
-      .pipe(outStream);*/
+    var outStream2 = self.s3fs2.createWriteStream(filePath2);
+    
+    var readStream = file.stream
+    gm(readStream)
+    .resize('200', '200')
+    .stream(function (err, stdout, stderr) {
+      var writeStream = outStream
+      stdout.pipe(writeStream);
+    });
 
+    file.stream.pipe(outStream2);
 
-      var readStream = file.stream
-gm(readStream)
-.resize('200', '200')
-.stream(function (err, stdout, stderr) {
-  var writeStream = outStream
-  stdout.pipe(writeStream);
-});
-
-
-    //file.stream
-      //.pipe(self.convert2())
-      //.pipe(outStream2);
     outStream.on('error', cb);
-    //outStream.on('finish', function() {
       outStream.on('finish', function() {
         cb(null, {
           size: outStream.bytesWritten,
@@ -74,15 +67,6 @@ gm(readStream)
           location: 'https://' + self.options.bucket + '.s3.amazonaws.com/' + filePath
         });
       });
-      //outStream2.on('finish', function() {
-        /*cb(null, {
-          size: outStream2.bytesWritten,
-          key: filePath2,
-          location: 'https://' + self.options.bucket + '.s3.amazonaws.com/' + filePath2
-        });*/
-     // });
-    //});
-   // outStream2.on('error', cb);
     
   });
 };
