@@ -89,14 +89,14 @@ S3Storage.prototype._handleFile = function(req, file, cb) {
          var proc = ffmpeg(myloc)
           .takeScreenshots({
                 count: 1,
-                timemarks: [ '10' ], // number of seconds
+                timemarks: [ '50%' ], // number of seconds
                 filename: 'screenshot_%b'
               }, 'tmp/my-uploads/thumbnail-folder')
           .on('end', function(files) {
             console.log(files)
     console.log('Screenshots taken');
       console.log('screenshots were saved');
-filename_png = filename.replace(".mp4",".png")
+var filename_png = filename.replace(".mp4",".png")
 var screenurl = 'tmp/my-uploads/thumbnail-folder/screenshot_' + filename_png;
 console.log('SCCC:' + screenurl)
 
