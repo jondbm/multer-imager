@@ -106,7 +106,13 @@ console.log('SCCC:' + screenurl)
 
 
 var outStream_vidthumb = self.s3fs3.createWriteStream(self.options.dirname + '/screenshot_' + filename_png);
-
+outStream_vidthumb.on('finish', function() {
+  console.log('delete video shot');
+   fs.unlink('tmp/my-uploads/thumbnail-folder/screenshot_' + filename_png,function(err){
+        if(err) return console.log(err);
+        console.log('file deleted successfully');
+   }); 
+});
 gm(screenurl)
 .resize(200, 200)
 .stream(function (err, stdout, stderr) {
